@@ -36,6 +36,7 @@ then
     rm $DEVDB
 fi
 
+python -Wi manage.py makemigrations
 python -Wi manage.py migrate > /dev/null
 python -Wi manage.py createsuperuser --noinput --username $TEST_USER --email $TEST_USER_EMAIL
 
