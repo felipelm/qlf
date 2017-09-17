@@ -2,6 +2,7 @@
 source activate quicklook 
 
 export QLF_PROJECT=$(pwd)/qlf/qlf
+export QLF_ROOT=$(pwd)
 
 # Run QLF in development mode, create db if it does not exist
 # start QLF web applicationi, Bokeh server and the QLF daemon
