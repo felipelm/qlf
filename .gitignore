@@ -1,6 +1,6 @@
 *.log
-qlf/*
-data/*
-redux/*
-desiutil/*
-desispec/*
+qlf/
+data/
+redux/
+desiutil/
+desispec/
