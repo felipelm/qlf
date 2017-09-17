@@ -1,0 +1,9 @@
+[submodule "qlf"]
+	path = qlf
+	url = git@github.com:desihub/qlf.git
+[submodule "desispec"]
+	path = desispec
+	url = https://github.com/desihub/desispec.git
+[submodule "desiutil"]
+	path = desiutil
+	url = https://github.com/desihub/desiutil.git
