@@ -2,16 +2,6 @@ qlf:
   image: felipelm/qlf
   volumes:
     - .:/app
-  environment:
-    - PATH=/usr/local/envs/quicklook/bin:$PATH
-    - QLF_ROOT=/app
-    - CONDA_DEFAULT_ENV=quicklook
-    - TEST_USER=nobody
-    - TEST_USER_EMAIL=${TEST_USER}@example.com
-    - TEST_USER_PASSWD=nobody
-    - DEVDB="db.sqlite3"
-    - PATH=$QLF_ROOT/$package/bin:$PATH
-    - PYTHONPATH=$QLF_ROOT/$package/py:$PYTHONPATH
   working_dir: /app/
   command: ./run.sh
   ports:
