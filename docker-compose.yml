@@ -1,8 +1,18 @@
-qlf:
-  image: felipelm/qlf
-  volumes:
-    - .:/app
-  working_dir: /app/
-  command: ./run.sh
-  ports:
-    - "8000:8000"
+version: '3'
+services:
+  db:
+    image: postgres
+  qlf:
+    image: felipelm/qlf
+    volumes:
+      - .:/app
+    working_dir: /app/
+    # command: /bin/bash -c "tail -f requirements.txt"
+    command: sh start.sh
+    # command: python -Wi qlf/qlf/manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+      - "5006:5006"
+      - "56005:56005"
+    depends_on:
+      - db
