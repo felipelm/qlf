@@ -1,8 +1,12 @@
-qlf:
-  image: felipelm/qlf
-  volumes:
-    - .:/app
-  working_dir: /app/
-  command: ./run.sh
-  ports:
-    - "8000:8000"
+version: '3'
+services:
+  qlf:
+    image: felipelm/qlf
+    volumes:
+      - .:/app
+    working_dir: /app/
+    command: ./run.sh
+    ports:
+      - "8000:8000"
+      - "5006:5006"
+      - "56005:56005"
