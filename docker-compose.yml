@@ -4,9 +4,10 @@ services:
     image: felipelm/qlf
     volumes:
       - .:/app
+    restart: always
     working_dir: /app/
     command: ./run.sh
     ports:
       - "8000:8000"
       - "5006:5006"
-      - "56005:56005"
+      - "56006:56006"

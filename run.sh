@@ -1,6 +1,11 @@
 #!/bin/bash
 source activate quicklook 
 
+
+pip install watchdog
+pip install -r qlf/requirements.txt
+apt-get install lsof
+
 export QLF_PROJECT=$(pwd)/qlf/qlf
 export QLF_ROOT=$(pwd)
 
@@ -31,11 +36,17 @@ python -Wi manage.py createsuperuser --noinput --username $TEST_USER --email $TE
 
 echo "QLF web application is running at http://localhost:8000 you may start Quick Look from the pipeline interface."
 
-bokeh serve --allow-websocket-origin=localhost:8000 dashboard/bokeh/qasnr dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint &
+bokeh serve --allow-websocket-origin=0.0.0.0:8000 --port=5006 dashboard/bokeh/qasnr dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint &> $QLF_ROOT/bokeh.log &
 python -Wi manage.py runserver 0.0.0.0:8000 &
 
-cd $QLF_ROOT
 
+echo "Watching .py files..."
+
+watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='echo "${watch_src_path}"' . &
+watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='kill -9 `lsof -t -i:5006`' . &
+watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='bokeh serve --allow-websocket-origin=0.0.0.0:8000 dashboard/bokeh/qasnr dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint' . &> $QLF_ROOT/bokeh.log &
+
+cd $QLF_ROOT
 echo "Initializing QLF Daemon..."
 
 # Start QLF daemon
