@@ -34,9 +34,9 @@ export TEST_USER_PASSWD=nobody
 # python -Wi manage.py migrate > /dev/null
 # python -Wi manage.py createsuperuser --noinput --username $TEST_USER --email $TEST_USER_EMAIL
 
-echo "QLF web application is running at http://localhost:8000 you may start Quick Look from the pipeline interface."
+echo "QLF web application is running at http://$HOSTNAME:8000 you may start Quick Look from the pipeline interface."
 
-bokeh serve --allow-websocket-origin=$HOSTNAME:8000 --host=$HOSTNAME:5006 --port=5006 dashboard/bokeh/qasnr dashboard/bokeh/graphs dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint &> $QLF_ROOT/bokeh.log &
+bokeh serve --allow-websocket-origin=$HOSTNAME --host=$HOSTNAME:5006 --port=5006 dashboard/bokeh/qasnr dashboard/bokeh/graphs dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint &> $QLF_ROOT/bokeh.log &
 python -Wi manage.py runserver 0.0.0.0:8000 &
 
 
