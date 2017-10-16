@@ -24,15 +24,15 @@ export TEST_USER_EMAIL=nobody@example.com
 export TEST_USER_PASSWD=nobody
 
 # Initialize the development database
-# DEVDB="db.sqlite3"
-# if [ -f $DEVDB ];
-# then
-#     rm $DEVDB
-# fi
+DEVDB="db.sqlite3"
+if [ -f $DEVDB ];
+then
+    rm $DEVDB
+fi
 
-# python -Wi manage.py makemigrations
-# python -Wi manage.py migrate > /dev/null
-# python -Wi manage.py createsuperuser --noinput --username $TEST_USER --email $TEST_USER_EMAIL
+python -Wi manage.py makemigrations
+python -Wi manage.py migrate > /dev/null
+python -Wi manage.py createsuperuser --noinput --username $TEST_USER --email $TEST_USER_EMAIL
 
 echo "QLF web application is running at http://$HOSTNAME:8000 you may start Quick Look from the pipeline interface."
 
