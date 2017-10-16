@@ -2,6 +2,10 @@ version: '3'
 services:
   qlf:
     image: felipelm/qlf
+    environment:
+      - QLF_API_URL=http://localhost:8000/dashboard/api
+      - QLF_BASE_URL=http://localhost:8000
+      - HOSTNAME=localhost
     volumes:
       - .:/app
     restart: always

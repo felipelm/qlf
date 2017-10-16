@@ -36,7 +36,7 @@ export TEST_USER_PASSWD=nobody
 
 echo "QLF web application is running at http://localhost:8000 you may start Quick Look from the pipeline interface."
 
-bokeh serve --allow-websocket-origin=localhost:8000 --port=5006 dashboard/bokeh/qasnr dashboard/bokeh/graphs dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint &> $QLF_ROOT/bokeh.log &
+bokeh serve --allow-websocket-origin=$HOSTNAME:8000 --host=$HOSTNAME:5006 --port=5006 dashboard/bokeh/qasnr dashboard/bokeh/graphs dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint &> $QLF_ROOT/bokeh.log &
 python -Wi manage.py runserver 0.0.0.0:8000 &
 
 
