@@ -1,13 +1,21 @@
 #!/bin/bash
 source activate quicklook 
 
-
+pip install -U Twisted[tls,http2]
 pip install watchdog
 pip install -r qlf/requirements.txt
 apt-get install lsof
+apt-get install redis-server
+pip install daphne
 
 export QLF_PROJECT=$(pwd)/qlf/qlf
 export QLF_ROOT=$(pwd)
+
+cd $QLF_ROOT
+echo "Initializing QLF Daemon..."
+
+# Start QLF daemon
+python -Wi qlf/bin/qlf_daemon.py &
 
 cd $QLF_PROJECT
 
@@ -32,22 +40,17 @@ fi
 
 python -Wi manage.py makemigrations
 python -Wi manage.py migrate > /dev/null
-python -Wi manage.py createsuperuser --noinput --username $TEST_USER --email $TEST_USER_EMAIL
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'pass')" | python manage.py shell
 
-echo "QLF web application is running at http://$HOSTNAME:8000 you may start Quick Look from the pipeline interface."
+echo "QLF web application is running at http://$QLF_HOSTNAME:8000 you may start Quick Look from the pipeline interface."
 
-bokeh serve --allow-websocket-origin=$HOSTNAME --allow-websocket-origin=$HOSTNAME:8000 --host=$HOSTNAME:5006 --port=5006 dashboard/bokeh/qasnr dashboard/bokeh/graphs dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint &> $QLF_ROOT/bokeh.log &
-python -Wi manage.py runserver 0.0.0.0:8000 &
+bokeh serve --allow-websocket-origin=$QLF_HOSTNAME --allow-websocket-origin=$QLF_HOSTNAME:8000 --host=$QLF_HOSTNAME:5006 --port=5006 dashboard/bokeh/qasnr dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint &> $QLF_ROOT/bokeh.log &
+python -u manage.py runserver 0.0.0.0:8000
 
 
 echo "Watching .py files..."
 
-watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='echo "${watch_src_path}"' . &
-watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='kill -9 `lsof -t -i:5006`' . &
-watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='bokeh serve --allow-websocket-origin=localhost:8000 dashboard/bokeh/qasnr dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint dashboard/bokeh/graphs' . &> $QLF_ROOT/bokeh.log &
+#watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='echo "${watch_src_path}"' . &
+#watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='kill -9 `lsof -t -i:5006`' . &
+#watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='bokeh serve --allow-websocket-origin=localhost:8000 dashboard/bokeh/qasnr dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint dashboard/bokeh/graphs' . &> $QLF_ROOT/bokeh.log &
 
-cd $QLF_ROOT
-echo "Initializing QLF Daemon..."
-
-# Start QLF daemon
-python -Wi qlf/bin/qlf_daemon.py
