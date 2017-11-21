@@ -2,11 +2,7 @@
 source activate quicklook 
 
 pip install -U Twisted[tls,http2]
-pip install watchdog
 pip install -r qlf/requirements.txt
-apt-get install lsof
-apt-get install redis-server
-pip install daphne
 
 export QLF_PROJECT=$(pwd)/qlf/qlf
 export QLF_ROOT=$(pwd)
@@ -46,11 +42,3 @@ echo "QLF web application is running at http://$QLF_HOSTNAME:8000 you may start 
 
 bokeh serve --allow-websocket-origin=$QLF_HOSTNAME --allow-websocket-origin=$QLF_HOSTNAME:8000 --host=$QLF_HOSTNAME:5006 --port=5006 dashboard/bokeh/qasnr dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint &> $QLF_ROOT/bokeh.log &
 python -u manage.py runserver 0.0.0.0:8000
-
-
-echo "Watching .py files..."
-
-#watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='echo "${watch_src_path}"' . &
-#watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='kill -9 `lsof -t -i:5006`' . &
-#watchmedo shell-command --patterns="*.py;*.txt;*.css" --recursive --command='bokeh serve --allow-websocket-origin=localhost:8000 dashboard/bokeh/qasnr dashboard/bokeh/monitor dashboard/bokeh/exposures dashboard/bokeh/footprint dashboard/bokeh/graphs' . &> $QLF_ROOT/bokeh.log &
-
