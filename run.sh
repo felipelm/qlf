@@ -1,6 +1,12 @@
 #!/bin/bash
 source activate quicklook 
 
+for package in desispec desiutil; do
+	echo "Setting $package..."
+	export PATH=$QLF_ROOT/$package/bin:$PATH
+	export PYTHONPATH=$QLF_ROOT/$package/py:$PYTHONPATH
+done
+
 pip install -U Twisted[tls,http2]
 pip install -r qlf/requirements.txt
 
@@ -14,12 +20,6 @@ echo "Initializing QLF Daemon..."
 python -Wi qlf/bin/qlf_daemon.py &
 
 cd $QLF_PROJECT
-
-for package in desispec desiutil; do
-	echo "Setting $package..."
-	export PATH=$QLF_ROOT/$package/bin:$PATH
-	export PYTHONPATH=$QLF_ROOT/$package/py:$PYTHONPATH
-done
 
 echo "Initializing QLF database..."
 # Test user for the development db
