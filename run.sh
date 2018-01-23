@@ -12,6 +12,7 @@ pip install -r qlf/requirements.txt
 
 export QLF_PROJECT=$(pwd)/qlf/qlf
 export QLF_ROOT=$(pwd)
+export QLF_REDIS=True
 
 cd $QLF_ROOT
 echo "Initializing QLF Daemon..."
